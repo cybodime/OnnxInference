@@ -53,32 +53,32 @@ void ObjectInference()
    Ort::SessionOptions session_options;
    Ort::Session session(env, L"D:\\Projects\\Projects.Python\\ObjectDetectionYoloV8\\runs\\detect\\train6\\weights\\best.onnx", session_options);
    //
-   // ÀÔ·Â µ¥ÀÌÅÍ ÁØºñ (¿¹½Ã: ÀÌ¹ÌÁö¸¦ ÅÙ¼­·Î º¯È¯)
-   cv::Mat image = cv::imread("D:\\Storage\\Sample\\YOLOv8Test\\20220927_000057_101´©1022.jpg"); // ÀÔ·Â ÀÌ¹ÌÁö ·Îµå
-   cv::resize(image, image, cv::Size(640, 640)); // ÀÌ¹ÌÁö Å©±â Á¶Á¤
-   cv::cvtColor(image, image, cv::COLOR_BGR2RGB); // BGRÀ» RGB·Î º¯È¯
+   // ì…ë ¥ ë°ì´í„° ì¤€ë¹„ (ì˜ˆì‹œ: ì´ë¯¸ì§€ë¥¼ í…ì„œë¡œ ë³€í™˜)
+   cv::Mat image = cv::imread("https://github.com/cybodime/OnnxInference/blob/main/20220927_000057_1011022.jpg"); // ì…ë ¥ ì´ë¯¸ì§€ ë¡œë“œ
+   cv::resize(image, image, cv::Size(640, 640)); // ì´ë¯¸ì§€ í¬ê¸° ì¡°ì •
+   cv::cvtColor(image, image, cv::COLOR_BGR2RGB); // BGRì„ RGBë¡œ ë³€í™˜
    image.convertTo(image, CV_32F, 1.0 / 255);
    std::vector<float> input_data(image.data, image.data + image.total() * image.channels());
 
 
-   // ONNX ¸ğµ¨ ½ÇÇà
+   // ONNX ëª¨ë¸ ì‹¤í–‰
    const int64_t shape[] = { 1, 3, 640, 640 };
    const char* outputName = "output0";
    Ort::Value input_tensor = Ort::Value::CreateTensor<float>(mi, input_data.data(), input_data.size(), shape, 4);
    std::vector<Ort::Value> output_tensor = session.Run(Ort::RunOptions(), nullptr, &input_tensor, 1, &outputName, 0);
 
-   // °á°ú Ã³¸® ¹× »ç°¢Çü ±×¸®±â
+   // ê²°ê³¼ ì²˜ë¦¬ ë° ì‚¬ê°í˜• ê·¸ë¦¬ê¸°
    float* output_data = output_tensor[0].GetTensorMutableData<float>();
-   // ¿©±â¿¡¼­ ¹°Ã¼ ÀÎ½Ä °á°ú¸¦ ÃßÃâÇÏ°í »ç°¢Çü Á¤º¸¸¦ ¾ò¾î¾ß ÇÕ´Ï´Ù.
+   // ì—¬ê¸°ì—ì„œ ë¬¼ì²´ ì¸ì‹ ê²°ê³¼ë¥¼ ì¶”ì¶œí•˜ê³  ì‚¬ê°í˜• ì •ë³´ë¥¼ ì–»ì–´ì•¼ í•©ë‹ˆë‹¤.
 
-   // ¿¹½Ã: ¹°Ã¼ÀÇ °æ°è »óÀÚ Á¤º¸ (x, y, width, height)
+   // ì˜ˆì‹œ: ë¬¼ì²´ì˜ ê²½ê³„ ìƒì ì •ë³´ (x, y, width, height)
    int x = 100;
    int y = 150;
    int width = 50;
    int height = 80;
 
-   cv::rectangle(image, cv::Rect(x, y, width, height), cv::Scalar(0, 255, 0), 2); // ³ì»ö »ç°¢Çü ±×¸®±â
-   cv::imshow("Detected Object", image); // °á°ú ÀÌ¹ÌÁö Ç¥½Ã
+   cv::rectangle(image, cv::Rect(x, y, width, height), cv::Scalar(0, 255, 0), 2); // ë…¹ìƒ‰ ì‚¬ê°í˜• ê·¸ë¦¬ê¸°
+   cv::imshow("Detected Object", image); // ê²°ê³¼ ì´ë¯¸ì§€ í‘œì‹œ
 }
 
 void run_ort_trt()
@@ -147,7 +147,7 @@ void run_ort_trt()
     //constexpr size_t input_tensor_size = 640 * 640 * 3;  // simplify ... using known dim values to calculate size
     // use OrtGetTensorShapeElementCount() to get official size!
 
-    cv::Mat inputImage = cv::imread("D:\\Storage\\Sample\\YOLOv8Test\\20220927_000057_101´©1022.jpg", cv::ImreadModes::IMREAD_COLOR);    
+    cv::Mat inputImage = cv::imread("D:\\Storage\\Sample\\YOLOv8Test\\20220927_000057_101ëˆ„1022.jpg", cv::ImreadModes::IMREAD_COLOR);    
     //
     size_t channels = inputImage.channels();
     size_t total = inputImage.total();
@@ -159,16 +159,16 @@ void run_ort_trt()
 
     std::vector<float> input_tensor_values(IMG_SIZE_X * IMG_SIZE_Y * channels);
     //
-    //cv::cvtColor(inputImage, inputImage, cv::ColorConversionCodes::COLOR_BGR2RGB);  // cv::COLOR_RGB2BGR);    //°ÑÀ¸·Î´Â ÀÌ¹ÌÁö º¯È­°¡ ¾ø´Ù.
-    //inputImage.convertTo(inputImage, CV_32FC3, 0.003921568627451);  //±×³É ±î¸Ä°Ô º¸ÀÎ´Ù.
+    //cv::cvtColor(inputImage, inputImage, cv::ColorConversionCodes::COLOR_BGR2RGB);  // cv::COLOR_RGB2BGR);    //ê²‰ìœ¼ë¡œëŠ” ì´ë¯¸ì§€ ë³€í™”ê°€ ì—†ë‹¤.
+    //inputImage.convertTo(inputImage, CV_32FC3, 0.003921568627451);  //ê·¸ëƒ¥ ê¹Œë§£ê²Œ ë³´ì¸ë‹¤.
     //inputImage.convertTo(inputImage, CV_32FC3);
     //inputImage /= (float)255.0;
 
     cv::Mat flat = inputImage.reshape(1, total * channels);    
     input_tensor_values = inputImage.isContinuous() ? flat : flat.clone();
     
-    //À§¿¡¶û ¾ê¶û °ªÀÌ Á» Æ²¸®´Ù. ¾î´À°Ô ¸Â´ÂÁö´Â ¸ğ¸£°Ú´Âµ¥, TensorServer ¸¸µé¶§, À§¿¡ ¹æ¹ıÀ¸·Î Çß´Ù. 
-    //±×¸®°í, ¾Æ·¡ ¹æ¹ıÀ¸·Î ÇØµµ, °á°ú°¡ Á¦´ë·Î ¾È³ª¿À´Â°Ç ¸¶Âù°¡Áö¶ó...
+    //ìœ„ì—ë‘ ì–˜ë‘ ê°’ì´ ì¢€ í‹€ë¦¬ë‹¤. ì–´ëŠê²Œ ë§ëŠ”ì§€ëŠ” ëª¨ë¥´ê² ëŠ”ë°, TensorServer ë§Œë“¤ë•Œ, ìœ„ì— ë°©ë²•ìœ¼ë¡œ í–ˆë‹¤. 
+    //ê·¸ë¦¬ê³ , ì•„ë˜ ë°©ë²•ìœ¼ë¡œ í•´ë„, ê²°ê³¼ê°€ ì œëŒ€ë¡œ ì•ˆë‚˜ì˜¤ëŠ”ê±´ ë§ˆì°¬ê°€ì§€ë¼...
     //cv::Mat input_mat = cv::dnn::blobFromImage(inputImage);
     //input_tensor_values.assign(input_mat.begin<float>(), input_mat.end<float>());
             
@@ -193,7 +193,7 @@ void run_ort_trt()
     float x_factor = inputImage.cols / INPUT_WIDTH;
     float y_factor = inputImage.rows / INPUT_HEIGHT;
 
-    // Mat Å¸ÀÔÀ¸·Î º¯È¯ ÈÄ °¡Àå Å« confidence¸¦ °¡Áø Id¸¦ ÃÖÁ¾ °á°ú·Î Ãâ·Â
+    // Mat íƒ€ì…ìœ¼ë¡œ ë³€í™˜ í›„ ê°€ì¥ í° confidenceë¥¼ ê°€ì§„ Idë¥¼ ìµœì¢… ê²°ê³¼ë¡œ ì¶œë ¥
     cv::Mat1f result = cv::Mat1f(1000, 1, floatarr);
     cv::Point classIdPoint;
     float* data = (float*)result.data;
