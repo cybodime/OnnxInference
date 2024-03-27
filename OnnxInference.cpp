@@ -51,7 +51,7 @@ void ObjectInference()
    Ort::MemoryInfo mi = Ort::MemoryInfo::CreateCpu(OrtAllocatorType::OrtDeviceAllocator, OrtMemType::OrtMemTypeCPU);
    Ort::Env env = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "ONNXRuntime");
    Ort::SessionOptions session_options;
-   Ort::Session session(env, L"D:\\Projects\\Projects.Python\\ObjectDetectionYoloV8\\runs\\detect\\train6\\weights\\best.onnx", session_options);
+   Ort::Session session(env, L"https://github.com/cybodime/OnnxInference/blob/main/best.onnx", session_options);
    //
    // 입력 데이터 준비 (예시: 이미지를 텐서로 변환)
    cv::Mat image = cv::imread("https://github.com/cybodime/OnnxInference/blob/main/20220927_000057_1011022.jpg"); // 입력 이미지 로드
